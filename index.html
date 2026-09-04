@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -67,6 +68,7 @@ button{
 .bookBtn{background:#0b3d91;color:white}
 .payBtn{background:#168a36;color:white}
 .whatsapp{background:#25d366;color:white}
+.langBtn{background:#ff9800;color:white}
 
 .tour{
  display:inline-block;
@@ -87,9 +89,23 @@ button{
  margin-top:20px;
 }
 
-.admin{
- display:none;
+.paymentBox{
+ background:#f7fff9;
+ border:2px solid #168a36;
+ padding:15px;
+ border-radius:12px;
+ margin-top:15px;
+ text-align:center;
 }
+
+.paymentBox img{
+ width:220px;
+ max-width:100%;
+ margin:15px auto;
+ display:block;
+}
+
+.admin{display:none}
 
 .booking{
  border:1px solid #ddd;
@@ -110,6 +126,7 @@ footer{
  color:#666;
 }
 </style>
+
 </head>
 
 <body>
@@ -117,33 +134,32 @@ footer{
 <header>
 <h1>Ganesh Tours & Travels</h1>
 <p>Arnala, Virar West - 401302</p>
-<p>Online Tour Booking</p>
+<p id="headerSub">Online Tour Booking</p>
+
+<button class="langBtn" onclick="changeLanguage()">
+🌐 मराठी / English / हिंदी
+</button>
 </header>
 
 <div class="container">
 
 <div class="card">
-<h2>Our Tours</h2>
+<h2 id="toursTitle">Our Tours</h2>
 
-<span class="tour">Round Trip</span>
-<span class="tour">One Way Trip</span>
-<span class="tour">Ashtvinayak</span>
-<span class="tour">Kokan</span>
-<span class="tour">Mahabaleshwar</span>
+<span class="tour" id="tour1">Round Trip</span> <span class="tour" id="tour2">One Way Trip</span> <span class="tour" id="tour3">Ashtvinayak</span> <span class="tour" id="tour4">Kokan</span> <span class="tour" id="tour5">Mahabaleshwar</span>
+
 </div>
 
 <div class="card">
 
-<h2>Book Your Tour</h2>
+<h2 id="bookingTitle">Book Your Tour</h2>
 
-<label>Customer Name</label>
-<input id="name" type="text" placeholder="Enter your name">
+<label id="nameLabel">Customer Name</label> <input id="name" type="text" placeholder="Enter your name">
 
-<label>Mobile Number</label>
-<input id="mobile" type="tel" placeholder="Enter mobile number">
+<label id="mobileLabel">Mobile Number</label> <input id="mobile" type="tel" placeholder="Enter mobile number">
 
-<label>Tour</label>
-<select id="tour">
+<label id="tourLabel">Tour</label> <select id="tour">
+
 <option value="">Select Tour</option>
 <option>Round Trip</option>
 <option>One Way Trip</option>
@@ -152,33 +168,59 @@ footer{
 <option>Mahabaleshwar</option>
 </select>
 
-<label>Travel Date</label>
-<input id="date" type="date">
+<label id="dateLabel">Travel Date</label> <input id="date" type="date">
 
-<label>Number of Passengers</label>
-<input id="persons" type="number" min="1" value="1">
+<label id="personsLabel">Number of Passengers</label> <input id="persons" type="number" min="1" value="1">
 
-<label>Total Cost (₹)</label>
-<input id="total" type="number" placeholder="Enter total cost">
+<label id="totalLabel">Total Cost (₹)</label> <input id="total" type="number" placeholder="Enter total cost">
 
-<button class="bookBtn" onclick="bookTour()">Confirm Booking</button>
+<label id="advanceLabel">Advance Payment (₹)</label> <input id="advance" type="number" min="1" value="500">
+
+<button class="bookBtn" onclick="bookTour()" id="confirmBtn">
+Confirm Booking
+</button>
 
 <div id="success" class="success">
-<h3>✅ Booking Submitted</h3>
+
+<h3 id="successTitle">✅ Booking Submitted</h3>
+
 <div id="bookingDetails"></div>
 
-<button class="payBtn" onclick="payAdvance()">
-Pay Advance ₹500
+<div class="paymentBox">
+
+<h3 id="paymentTitle">💰 Advance Payment</h3>
+
+<p>
+<b>UPI ID:</b><br>
+8446161757-2@ibl
+</p>
+
+<p id="advanceShow"></p>
+
+<!-- QR CODE -->
+
+<img id="qrCode" src="" alt="UPI QR Code">
+
+<p id="scanText">
+📱 Scan QR Code to Pay Advance
+</p>
+
+<button class="payBtn" onclick="payAdvance()" id="payBtn">
+Pay Advance
 </button>
 
-<button class="whatsapp" onclick="sendWhatsApp()">
+</div>
+
+<button class="whatsapp" onclick="sendWhatsApp()" id="whatsappBtn">
 Send Booking on WhatsApp
 </button>
+
 </div>
 
 </div>
 
 <div class="card">
+
 <h2>Admin</h2>
 
 <p>Admin panel उघडण्यासाठी password टाका.</p>
@@ -212,8 +254,128 @@ Ganesh Tours & Travels © 2026
 
 let currentBooking=null;
 
-/* CHANGE THIS PASSWORD */
+/* ADMIN PASSWORD */
 const ADMIN_PASSWORD="1234";
+
+/* YOUR UPI ID */
+const UPI_ID="8446161757-2@ibl";
+
+/* LANGUAGE */
+let language="en";
+
+const translations={
+
+en:{
+headerSub:"Online Tour Booking",
+toursTitle:"Our Tours",
+bookingTitle:"Book Your Tour",
+nameLabel:"Customer Name",
+mobileLabel:"Mobile Number",
+tourLabel:"Tour",
+dateLabel:"Travel Date",
+personsLabel:"Number of Passengers",
+totalLabel:"Total Cost (₹)",
+advanceLabel:"Advance Payment (₹)",
+confirmBtn:"Confirm Booking",
+successTitle:"✅ Booking Submitted",
+paymentTitle:"💰 Advance Payment",
+scanText:"📱 Scan QR Code to Pay Advance",
+payBtn:"Pay Advance",
+whatsappBtn:"Send Booking on WhatsApp",
+namePlaceholder:"Enter your name",
+mobilePlaceholder:"Enter mobile number",
+totalPlaceholder:"Enter total cost",
+selectTour:"Select Tour"
+},
+
+mr:{
+headerSub:"ऑनलाइन टूर बुकिंग",
+toursTitle:"आमच्या सहली",
+bookingTitle:"तुमची सहल बुक करा",
+nameLabel:"ग्राहकाचे नाव",
+mobileLabel:"मोबाईल नंबर",
+tourLabel:"सहल",
+dateLabel:"प्रवासाची तारीख",
+personsLabel:"प्रवाशांची संख्या",
+totalLabel:"एकूण खर्च (₹)",
+advanceLabel:"ॲडव्हान्स पेमेंट (₹)",
+confirmBtn:"बुकिंग निश्चित करा",
+successTitle:"✅ बुकिंग यशस्वी",
+paymentTitle:"💰 ॲडव्हान्स पेमेंट",
+scanText:"📱 ॲडव्हान्स भरण्यासाठी QR स्कॅन करा",
+payBtn:"ॲडव्हान्स भरा",
+whatsappBtn:"WhatsApp वर बुकिंग पाठवा",
+namePlaceholder:"तुमचे नाव टाका",
+mobilePlaceholder:"मोबाईल नंबर टाका",
+totalPlaceholder:"एकूण खर्च टाका",
+selectTour:"सहल निवडा"
+},
+
+hi:{
+headerSub:"ऑनलाइन टूर बुकिंग",
+toursTitle:"हमारी यात्राएँ",
+bookingTitle:"अपनी यात्रा बुक करें",
+nameLabel:"ग्राहक का नाम",
+mobileLabel:"मोबाइल नंबर",
+tourLabel:"यात्रा",
+dateLabel:"यात्रा की तारीख",
+personsLabel:"यात्रियों की संख्या",
+totalLabel:"कुल खर्च (₹)",
+advanceLabel:"एडवांस पेमेंट (₹)",
+confirmBtn:"बुकिंग कन्फर्म करें",
+successTitle:"✅ बुकिंग सफल",
+paymentTitle:"💰 एडवांस पेमेंट",
+scanText:"📱 एडवांस देने के लिए QR स्कैन करें",
+payBtn:"एडवांस भुगतान करें",
+whatsappBtn:"WhatsApp पर बुकिंग भेजें",
+namePlaceholder:"अपना नाम डालें",
+mobilePlaceholder:"मोबाइल नंबर डालें",
+totalPlaceholder:"कुल खर्च डालें",
+selectTour:"यात्रा चुनें"
+}
+
+};
+
+function changeLanguage(){
+
+ if(language==="en"){
+   language="mr";
+ }else if(language==="mr"){
+   language="hi";
+ }else{
+   language="en";
+ }
+
+ const t=translations[language];
+
+ document.getElementById("headerSub").innerText=t.headerSub;
+ document.getElementById("toursTitle").innerText=t.toursTitle;
+ document.getElementById("bookingTitle").innerText=t.bookingTitle;
+
+ document.getElementById("nameLabel").innerText=t.nameLabel;
+ document.getElementById("mobileLabel").innerText=t.mobileLabel;
+ document.getElementById("tourLabel").innerText=t.tourLabel;
+ document.getElementById("dateLabel").innerText=t.dateLabel;
+ document.getElementById("personsLabel").innerText=t.personsLabel;
+ document.getElementById("totalLabel").innerText=t.totalLabel;
+ document.getElementById("advanceLabel").innerText=t.advanceLabel;
+
+ document.getElementById("confirmBtn").innerText=t.confirmBtn;
+ document.getElementById("successTitle").innerText=t.successTitle;
+ document.getElementById("paymentTitle").innerText=t.paymentTitle;
+ document.getElementById("scanText").innerText=t.scanText;
+ document.getElementById("payBtn").innerText=t.payBtn;
+ document.getElementById("whatsappBtn").innerText=t.whatsappBtn;
+
+ document.getElementById("name").placeholder=t.namePlaceholder;
+ document.getElementById("mobile").placeholder=t.mobilePlaceholder;
+ document.getElementById("total").placeholder=t.totalPlaceholder;
+
+ document.querySelector("#tour option[value='']").innerText=t.selectTour;
+}
+
+
+/* BOOKING */
 
 function bookTour(){
 
@@ -222,10 +384,18 @@ function bookTour(){
  const tour=document.getElementById("tour").value;
  const date=document.getElementById("date").value;
  const persons=document.getElementById("persons").value;
- const total=document.getElementById("total").value;
+ const total=Number(document.getElementById("total").value);
+ const advance=Number(document.getElementById("advance").value);
 
- if(!name || !mobile || !tour || !date || !persons || !total){
+ if(!name || !mobile || !tour || !date || !persons || !total || !advance){
+
    alert("Please fill all booking details.");
+   return;
+ }
+
+ if(advance>total){
+
+   alert("Advance payment cannot be more than total cost.");
    return;
  }
 
@@ -237,15 +407,20 @@ function bookTour(){
    date:date,
    persons:persons,
    total:total,
-   advance:500,
+   advance:advance,
+   balance:total-advance,
    time:new Date().toLocaleString()
  };
 
- let bookings=JSON.parse(localStorage.getItem("ganeshBookings")||"[]");
+ let bookings=
+ JSON.parse(localStorage.getItem("ganeshBookings")||"[]");
 
  bookings.push(currentBooking);
 
- localStorage.setItem("ganeshBookings",JSON.stringify(bookings));
+ localStorage.setItem(
+   "ganeshBookings",
+   JSON.stringify(bookings)
+ );
 
  document.getElementById("bookingDetails").innerHTML=
  `
@@ -255,8 +430,24 @@ function bookTour(){
  <b>Date:</b> ${date}<br>
  <b>Passengers:</b> ${persons}<br>
  <b>Total Cost:</b> ₹${total}<br>
- <b>Advance:</b> ₹500
+ <b>Advance:</b> ₹${advance}<br>
+ <b>Balance:</b> ₹${total-advance}
  `;
+
+ document.getElementById("advanceShow").innerHTML=
+ "Advance Amount: <b>₹"+advance+"</b>";
+
+ /* CREATE QR CODE */
+
+ const upiURL=
+ "upi://pay?pa="+encodeURIComponent(UPI_ID)+
+ "&pn="+encodeURIComponent("Ganesh Tours & Travels")+
+ "&am="+encodeURIComponent(advance)+
+ "&cu=INR";
+
+ document.getElementById("qrCode").src=
+ "https://api.qrserver.com/v1/create-qr-code/?size=300x300&data="+
+ encodeURIComponent(upiURL);
 
  document.getElementById("success").style.display="block";
 
@@ -266,23 +457,30 @@ function bookTour(){
  });
 }
 
+
+/* UPI PAYMENT */
+
 function payAdvance(){
 
- /*
-  IMPORTANT:
-  Replace YOUR-UPI-ID@upi with your actual UPI ID.
- */
+ if(!currentBooking){
 
- const upi="YOUR-UPI-ID@upi";
+   alert("Please confirm booking first.");
+   return;
+ }
+
+ const advance=currentBooking.advance;
 
  const url=
- "upi://pay?pa="+encodeURIComponent(upi)+
+ "upi://pay?pa="+encodeURIComponent(UPI_ID)+
  "&pn="+encodeURIComponent("Ganesh Tours & Travels")+
- "&am=500"+
+ "&am="+encodeURIComponent(advance)+
  "&cu=INR";
 
  window.location.href=url;
 }
+
+
+/* WHATSAPP */
 
 function sendWhatsApp(){
 
@@ -297,7 +495,8 @@ Tour: ${currentBooking.tour}
 Date: ${currentBooking.date}
 Passengers: ${currentBooking.persons}
 Total Cost: ₹${currentBooking.total}
-Advance: ₹500`;
+Advance: ₹${currentBooking.advance}
+Balance: ₹${currentBooking.balance}`;
 
  const whatsapp=
  "https://wa.me/?text="+encodeURIComponent(message);
@@ -305,11 +504,16 @@ Advance: ₹500`;
  window.open(whatsapp,"_blank");
 }
 
+
+/* ADMIN */
+
 function openAdmin(){
 
- const password=document.getElementById("adminPassword").value;
+ const password=
+ document.getElementById("adminPassword").value;
 
  if(password!==ADMIN_PASSWORD){
+
    alert("Wrong admin password.");
    return;
  }
@@ -324,6 +528,9 @@ function openAdmin(){
  });
 }
 
+
+/* LOAD BOOKINGS */
+
 function loadBookings(){
 
  const bookings=
@@ -332,13 +539,14 @@ function loadBookings(){
  const box=document.getElementById("allBookings");
 
  if(bookings.length===0){
+
    box.innerHTML="<p>No bookings yet.</p>";
    return;
  }
 
  box.innerHTML="";
 
- bookings.reverse().forEach((b,index)=>{
+ bookings.slice().reverse().forEach((b,index)=>{
 
    box.innerHTML+=
    `
@@ -353,6 +561,7 @@ function loadBookings(){
    <b>Passengers:</b> ${b.persons}<br>
    <b>Total:</b> ₹${b.total}<br>
    <b>Advance:</b> ₹${b.advance}<br>
+   <b>Balance:</b> ₹${b.balance}<br>
 
    <div class="small">
    Booked: ${b.time}
@@ -363,15 +572,20 @@ function loadBookings(){
  });
 }
 
+
+/* DELETE */
 function clearBookings(){
 
- if(confirm("Delete all bookings?")){
-   localStorage.removeItem("ganeshBookings");
-   loadBookings();
- }
+  if(!confirm("Delete ALL bookings permanently?")){
+    return;
+  }
+
+  localStorage.removeItem("ganeshBookings");
+
+  currentBooking = null;
+
+  document.getElementById("allBookings").innerHTML =
+    "<p>✅ All bookings deleted successfully.</p>";
+
+  alert("All bookings deleted successfully.");
 }
-
-</script>
-
-</body>
-</html>
