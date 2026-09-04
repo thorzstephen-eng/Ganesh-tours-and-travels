@@ -1,0 +1,276 @@
+Enter file <!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ganesh Tours & Travels</title>
+
+<style>
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:#f5f7fb;
+  color:#172033;
+}
+header{
+  background:#0b3d91;
+  color:white;
+  padding:22px 16px;
+  text-align:center;
+}
+header h1{margin:0;font-size:28px}
+header p{margin:8px 0 0}
+.hero{
+  background:white;
+  padding:30px 18px;
+  text-align:center;
+}
+.hero h2{font-size:30px;margin:5px}
+.hero p{font-size:17px;color:#555}
+.container{
+  max-width:900px;
+  margin:auto;
+  padding:20px;
+}
+.card{
+  background:white;
+  padding:22px;
+  margin:18px 0;
+  border-radius:15px;
+  box-shadow:0 3px 15px #0001;
+}
+.tours{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+  gap:12px;
+}
+.tour{
+  background:#eef4ff;
+  padding:18px;
+  border-radius:12px;
+  text-align:center;
+  font-weight:bold;
+}
+label{
+  display:block;
+  margin-top:14px;
+  font-weight:bold;
+}
+input,select,textarea{
+  width:100%;
+  padding:13px;
+  margin-top:6px;
+  border:1px solid #ccd3df;
+  border-radius:8px;
+  font-size:16px;
+}
+button{
+  width:100%;
+  padding:15px;
+  margin-top:18px;
+  border:0;
+  border-radius:9px;
+  background:#0b3d91;
+  color:white;
+  font-size:17px;
+  font-weight:bold;
+}
+.advance{
+  background:#fff4d6;
+  padding:16px;
+  border-radius:10px;
+  margin-top:18px;
+}
+.success{
+  display:none;
+  background:#d9f7df;
+  color:#176b2c;
+  padding:15px;
+  border-radius:10px;
+  margin-top:15px;
+}
+footer{
+  background:#101828;
+  color:white;
+  text-align:center;
+  padding:25px;
+  margin-top:30px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>Ganesh Tours & Travels</h1>
+  <p>Arnala, Virar West - 401302</p>
+</header>
+
+<section class="hero">
+  <h2>Travel With Comfort & Trust</h2>
+  <p>One Way • Round Trip • Family Tours • Religious Tours</p>
+</section>
+
+<div class="container">
+
+<div class="card">
+<h2>Our Tours</h2>
+
+<div class="tours">
+<div class="tour">🛕 Ashtvinayak</div>
+<div class="tour">🌴 Kokan</div>
+<div class="tour">🏔️ Mahabaleshwar</div>
+<div class="tour">🚌 One Way Trip</div>
+<div class="tour">🔄 Round Trip</div>
+<div class="tour">📍 Custom Tour</div>
+</div>
+</div>
+
+<div class="card">
+<h2>Online Booking</h2>
+
+<form id="bookingForm">
+
+<label>Customer Name</label>
+<input type="text" id="name" required>
+
+<label>Mobile Number</label>
+<input type="tel" id="mobile" required>
+
+<label>Select Tour</label>
+<select id="tour" required>
+<option value="">Select Tour</option>
+<option>Ashtvinayak</option>
+<option>Kokan</option>
+<option>Mahabaleshwar</option>
+<option>One Way Trip</option>
+<option>Round Trip</option>
+<option>Custom Tour</option>
+</select>
+
+<label>Travel Date</label>
+<input type="date" id="date" required>
+
+<label>Number of Passengers</label>
+<input type="number" id="persons" min="1" value="1" required>
+
+<label>Total Tour Cost ₹</label>
+<input type="number" id="total" placeholder="Enter total cost" required>
+
+<div class="advance">
+<b>Advance Payment</b>
+<p>Booking confirm करण्यासाठी Advance Payment आवश्यक आहे.</p>
+<p><strong>Advance: ₹500</strong></p>
+</div>
+
+<label>Pickup Location</label>
+<input type="text" id="pickup" placeholder="Pickup location" required>
+
+<label>Message / Special Requirement</label>
+<textarea id="message" rows="3"></textarea>
+
+<button type="submit">Confirm Booking</button>
+
+</form>
+
+<div class="success" id="success">
+<b>Booking request तयार झाली! ✅</b>
+<p id="bookingDetails"></p>
+</div>
+
+</div>
+
+<div class="card">
+<h2>Advance Payment</h2>
+<p>Booking confirm करण्यासाठी ₹500 advance payment करा.</p>
+
+<button onclick="payAdvance()">
+💳 Pay Advance ₹500
+</button>
+
+<p style="font-size:13px;color:#666">
+Payment button मध्ये नंतर तुमचा UPI ID जोडू.
+</p>
+</div>
+
+<div class="card">
+<h2>Contact Us</h2>
+<p>📍 Arnala, Virar West - 401302</p>
+<p>📞 Booking साठी तुमच्या mobile वरून संपर्क करा.</p>
+</div>
+
+</div>
+
+<footer>
+<p>© 2026 Ganesh Tours & Travels</p>
+<p>All Rights Reserved</p>
+</footer>
+
+<script>
+
+document.getElementById("bookingForm").addEventListener("submit",function(e){
+
+e.preventDefault();
+
+let name=document.getElementById("name").value;
+let mobile=document.getElementById("mobile").value;
+let tour=document.getElementById("tour").value;
+let date=document.getElementById("date").value;
+let persons=document.getElementById("persons").value;
+let total=document.getElementById("total").value;
+let pickup=document.getElementById("pickup").value;
+let message=document.getElementById("message").value;
+
+let booking={
+name,
+mobile,
+tour,
+date,
+persons,
+total,
+advance:500,
+pickup,
+message,
+created:new Date().toLocaleString()
+};
+
+let bookings=JSON.parse(localStorage.getItem("ganeshBookings")||"[]");
+bookings.push(booking);
+localStorage.setItem("ganeshBookings",JSON.stringify(bookings));
+
+document.getElementById("success").style.display="block";
+
+document.getElementById("bookingDetails").innerHTML=
+"Customer: "+name+
+"<br>Tour: "+tour+
+"<br>Date: "+date+
+"<br>Passengers: "+persons+
+"<br>Total Cost: ₹"+total+
+"<br>Advance: ₹500";
+
+window.scrollTo({
+top:document.getElementById("success").offsetTop,
+behavior:"smooth"
+});
+
+});
+
+function payAdvance(){
+
+let upi="YOUR-UPI-ID@upi";
+
+let url=
+"upi://pay?pa="+upi+
+"&pn=Ganesh%20Tours%20%26%20Travels"+
+"&am=500"+
+"&cu=INR";
+
+window.location.href=url;
+
+}
+
+</script>
+
+</body>
+</html> here
