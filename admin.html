@@ -1,4 +1,7 @@
-<!DOCTYPE html>
+
+      <p><b>Name:</b> ${booking.name || booking.fullName || "-"}</p>
+
+      <p><b>Mobile:</b> ${booking.p<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -135,6 +138,411 @@ function loadBookings(){
 
     box.innerHTML=
       '<div class="card"><h3>📭 No bookings found</h3></div>';
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Ganesh Tours & Travels - Admin</title>
+
+<style>
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:#f4f7fb;
+  color:#172033;
+}
+
+header{
+  background:#0b3d91;
+  color:white;
+  padding:22px 15px;
+  text-align:center;
+}
+
+header h1{
+  margin:0 0 6px;
+  font-size:25px;
+}
+
+header p{
+  margin:0;
+  opacity:.9;
+}
+
+.container{
+  max-width:1000px;
+  margin:auto;
+  padding:18px;
+}
+
+.topbar{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-bottom:18px;
+}
+
+button,select{
+  border:0;
+  border-radius:8px;
+  padding:12px 16px;
+  font-size:15px;
+  cursor:pointer;
+}
+
+button{
+  background:#0b3d91;
+  color:white;
+}
+
+button:hover{
+  opacity:.9;
+}
+
+.danger{
+  background:#d62828;
+}
+
+.success{
+  background:#16803c;
+}
+
+.language{
+  background:white;
+  border:1px solid #ccc;
+}
+
+#bookingCount{
+  font-weight:bold;
+  margin:12px 0;
+}
+
+.booking{
+  background:white;
+  border-radius:12px;
+  padding:18px;
+  margin-bottom:15px;
+  box-shadow:0 2px 10px rgba(0,0,0,.08);
+  border-left:5px solid #0b3d91;
+}
+
+.booking.confirmed{
+  border-left-color:#16803c;
+}
+
+.booking.cancelled{
+  border-left-color:#d62828;
+}
+
+.booking h3{
+  margin:0 0 12px;
+  color:#0b3d91;
+}
+
+.row{
+  margin:7px 0;
+  line-height:1.5;
+}
+
+.label{
+  font-weight:bold;
+}
+
+.status{
+  display:inline-block;
+  padding:6px 10px;
+  border-radius:20px;
+  font-size:13px;
+  font-weight:bold;
+  background:#fff3cd;
+  color:#856404;
+}
+
+.status.confirmed{
+  background:#d4edda;
+  color:#155724;
+}
+
+.status.cancelled{
+  background:#f8d7da;
+  color:#721c24;
+}
+
+.actions{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  margin-top:15px;
+}
+
+.empty{
+  background:white;
+  padding:30px;
+  text-align:center;
+  border-radius:12px;
+  color:#666;
+}
+
+.notice{
+  background:#fff8e1;
+  padding:12px;
+  border-radius:8px;
+  margin-bottom:15px;
+  font-size:14px;
+}
+
+@media(max-width:600px){
+  .container{
+    padding:12px;
+  }
+
+  header h1{
+    font-size:21px;
+  }
+
+  button,select{
+    width:100%;
+  }
+
+  .actions button{
+    width:100%;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1 id="title">Ganesh Tours & Travels</h1>
+  <p id="subtitle">Booking Admin Panel</p>
+</header>
+
+<div class="container">
+
+  <div class="topbar">
+
+    <select id="language" class="language" onchange="changeLanguage()">
+      <option value="en">English</option>
+      <option value="mr">मराठी</option>
+      <option value="hi">हिन्दी</option>
+    </select>
+
+    <button onclick="loadBookings()" id="refreshBtn">
+      🔄 Refresh
+    </button>
+
+    <button class="danger" onclick="clearBookings()" id="clearBtn">
+      🗑️ Delete All
+    </button>
+
+  </div>
+
+  <div class="notice" id="notice">
+    Bookings saved on this device will appear here.
+  </div>
+
+  <div id="bookingCount"></div>
+
+  <div id="allBookings"></div>
+
+</div>
+
+<script>
+
+let currentLanguage = "en";
+
+const text = {
+
+  en:{
+    title:"Ganesh Tours & Travels",
+    subtitle:"Booking Admin Panel",
+    refresh:"🔄 Refresh",
+    clear:"🗑️ Delete All",
+    notice:"Bookings saved on this device will appear here.",
+    bookings:"Total Bookings",
+    empty:"No bookings found.",
+    customer:"Customer",
+    phone:"Phone",
+    email:"Email",
+    trip:"Trip",
+    date:"Date",
+    time:"Time",
+    pickup:"Pickup",
+    passengers:"Passengers",
+    amount:"Amount",
+    advance:"Advance Payment",
+    status:"Status",
+    pending:"Pending",
+    confirmed:"Confirmed",
+    cancelled:"Cancelled",
+    confirm:"✅ Confirm Booking",
+    cancel:"❌ Cancel",
+    delete:"🗑️ Delete",
+    confirmAsk:"Confirm this booking?",
+    deleteAsk:"Delete this booking?",
+    clearAsk:"Delete ALL bookings permanently?",
+    deleted:"All bookings deleted successfully.",
+    yesConfirm:"Booking confirmed.",
+    yesCancel:"Booking cancelled."
+  },
+
+  mr:{
+    title:"गणेश टूर्स अँड ट्रॅव्हल्स",
+    subtitle:"बुकिंग अ‍ॅडमिन पॅनेल",
+    refresh:"🔄 रिफ्रेश",
+    clear:"🗑️ सर्व बुकिंग डिलीट",
+    notice:"या डिव्हाइसवर सेव्ह केलेली बुकिंग येथे दिसतील.",
+    bookings:"एकूण बुकिंग",
+    empty:"एकही बुकिंग सापडली नाही.",
+    customer:"ग्राहक",
+    phone:"फोन",
+    email:"ई-मेल",
+    trip:"ट्रिप",
+    date:"तारीख",
+    time:"वेळ",
+    pickup:"पिकअप",
+    passengers:"प्रवासी",
+    amount:"रक्कम",
+    advance:"अ‍ॅडव्हान्स पेमेंट",
+    status:"स्थिती",
+    pending:"प्रलंबित",
+    confirmed:"कन्फर्म",
+    cancelled:"रद्द",
+    confirm:"✅ बुकिंग कन्फर्म",
+    cancel:"❌ रद्द करा",
+    delete:"🗑️ डिलीट",
+    confirmAsk:"हे बुकिंग कन्फर्म करायचे?",
+    deleteAsk:"हे बुकिंग डिलीट करायचे?",
+    clearAsk:"सर्व बुकिंग कायमची डिलीट करायची?",
+    deleted:"सर्व बुकिंग डिलीट झाली.",
+    yesConfirm:"बुकिंग कन्फर्म झाली.",
+    yesCancel:"बुकिंग रद्द झाली."
+  },
+
+  hi:{
+    title:"गणेश टूर्स एंड ट्रैवल्स",
+    subtitle:"बुकिंग एडमिन पैनल",
+    refresh:"🔄 रिफ्रेश",
+    clear:"🗑️ सभी बुकिंग डिलीट",
+    notice:"इस डिवाइस पर सेव की गई बुकिंग यहां दिखाई देंगी।",
+    bookings:"कुल बुकिंग",
+    empty:"कोई बुकिंग नहीं मिली।",
+    customer:"ग्राहक",
+    phone:"फोन",
+    email:"ई-मेल",
+    trip:"ट्रिप",
+    date:"तारीख",
+    time:"समय",
+    pickup:"पिकअप",
+    passengers:"यात्री",
+    amount:"रकम",
+    advance:"एडवांस पेमेंट",
+    status:"स्थिति",
+    pending:"पेंडिंग",
+    confirmed:"कन्फर्म",
+    cancelled:"रद्द",
+    confirm:"✅ बुकिंग कन्फर्म",
+    cancel:"❌ रद्द करें",
+    delete:"🗑️ डिलीट",
+    confirmAsk:"क्या यह बुकिंग कन्फर्म करनी है?",
+    deleteAsk:"क्या यह बुकिंग डिलीट करनी है?",
+    clearAsk:"सभी बुकिंग हमेशा के लिए डिलीट करनी है?",
+    deleted:"सभी बुकिंग डिलीट हो गईं।",
+    yesConfirm:"बुकिंग कन्फर्म हो गई।",
+    yesCancel:"बुकिंग रद्द हो गई।"
+  }
+
+};
+
+function t(key){
+  return text[currentLanguage][key] || text.en[key] || key;
+}
+
+function changeLanguage(){
+
+  currentLanguage =
+    document.getElementById("language").value;
+
+  document.getElementById("title").innerText=t("title");
+  document.getElementById("subtitle").innerText=t("subtitle");
+  document.getElementById("refreshBtn").innerText=t("refresh");
+  document.getElementById("clearBtn").innerText=t("clear");
+  document.getElementById("notice").innerText=t("notice");
+
+  loadBookings();
+}
+
+function getBookings(){
+
+  try{
+
+    let data=localStorage.getItem("ganeshBookings");
+
+    if(!data){
+      return [];
+    }
+
+    let bookings=JSON.parse(data);
+
+    if(Array.isArray(bookings)){
+      return bookings;
+    }
+
+    return [];
+
+  }catch(error){
+
+    console.log(error);
+    return [];
+
+  }
+}
+
+function saveBookings(bookings){
+
+  localStorage.setItem(
+    "ganeshBookings",
+    JSON.stringify(bookings)
+  );
+
+}
+
+function value(obj, keys){
+
+  for(let key of keys){
+
+    if(
+      obj[key] !== undefined &&
+      obj[key] !== null &&
+      obj[key] !== ""
+    ){
+
+      return obj[key];
+
+    }
+
+  }
+
+  return "-";
+}
+
+function loadBookings(){
+
+  const bookings=getBookings();
+
+  const box=document.getElementById("allBookings");
+
+  document.getElementById("bookingCount").innerText =
+    t("bookings")+": "+bookings.length;
+
+  if(bookings.length===0){
+
+    box.innerHTML =
+      '<div class="empty">📭 '+t("empty")+"</div>";
 
     return;
   }
@@ -143,101 +551,253 @@ function loadBookings(){
 
   bookings.forEach((booking,index)=>{
 
-    const card=document.createElement("div");
-    card.className="card";
+    let status=value(
+      booking,
+      ["status","bookingStatus"]
+    );
 
-    card.innerHTML=`
+    if(status==="-" || !status){
+      status="pending";
+    }
 
-      <h2>Booking #${index+1}</h2>
+    let statusClass=
+      status.toLowerCase();
 
-      <p><b>Name:</b> ${booking.name || booking.fullName || "-"}</p>
+    let customer=value(
+      booking,
+      ["name","customerName","fullName"]
+    );
 
-      <p><b>Mobile:</b> ${booking.phone || booking.mobile || "-"}</p>
+    let phone=value(
+      booking,
+      ["phone","mobile","mobileNumber","contact"]
+    );
 
-      <p><b>Trip:</b> ${booking.trip || booking.package || booking.destination || "-"}</p>
+    let email=value(
+      booking,
+      ["email","emailAddress"]
+    );
 
-      <p><b>Date:</b> ${booking.date || booking.travelDate || "-"}</p>
+    let trip=value(
+      booking,
+      ["trip","package","packageName","destination","tour"]
+    );
 
-      <p><b>Time:</b> ${booking.time || booking.travelTime || "-"}</p>
+    let date=value(
+      booking,
+      ["date","travelDate","journeyDate","bookingDate"]
+    );
 
-      <p><b>Passengers:</b> ${booking.passengers || booking.persons || "-"}</p>
+    let time=value(
+      booking,
+      ["time","travelTime","journeyTime"]
+    );
 
-      <p><b>Payment:</b> ${booking.payment || booking.advance || "-"}</p>
+    let pickup=value(
+      booking,
+      ["pickup","pickupLocation","pickupPoint","location"]
+    );
 
-      <p class="status">
-        Status: ${booking.status || "Pending"}
-      </p>
+    let passengers=value(
+      booking,
+      ["passengers","persons","numberOfPassengers","people"]
+    );
 
-      <button class="confirm"
-        onclick="confirmBooking(${index})">
-        ✅ Confirm Booking
-      </button>
+    let amount=value(
+      booking,
+      ["amount","totalAmount","price","total"]
+    );
 
-      <button class="delete"
-        onclick="deleteBooking(${index})">
-        🗑️ Delete
-      </button>
+    let advance=value(
+      booking,
+      ["advance","advancePayment","advanceAmount"]
+    );
+
+    let html=`
+
+      <div class="booking ${statusClass}">
+
+        <h3>📋 ${trip}</h3>
+
+        <div class="row">
+          <span class="label">${t("customer")}:</span>
+          ${customer}
+        </div>
+
+        <div class="row">
+          <span class="label">${t("phone")}:</span>
+          ${phone}
+        </div>
+
+        <div class="row">
+          <span class="label">${t("email")}:</span>
+          ${email}
+        </div>
+
+        <div class="row">
+          <span class="label">${t("date")}:</span>
+          📅 ${date}
+        </div>
+
+        <div class="row">
+          <span class="label">${t("time")}:</span>
+          🕐 ${time}
+        </div>
+
+        <div class="row">
+          <span class="label">${t("pickup")}:</span>
+          ${pickup}
+        </div>
+
+        <div class="row">
+          <span class="label">${t("passengers")}:</span>
+          ${passengers}
+        </div>
+
+        <div class="row">
+          <span class="label">${t("amount")}:</span>
+          ₹${amount}
+        </div>
+
+        <div class="row">
+          <span class="label">${t("advance")}:</span>
+          ₹${advance}
+        </div>
+
+        <div class="row">
+          <span class="label">${t("status")}:</span>
+          <span class="status ${statusClass}">
+            ${statusText(status)}
+          </span>
+        </div>
+
+        <div class="actions">
+
+          <button
+            class="success"
+            onclick="confirmBooking(${index})">
+            ${t("confirm")}
+          </button>
+
+          <button
+            onclick="cancelBooking(${index})">
+            ${t("cancel")}
+          </button>
+
+          <button
+            class="danger"
+            onclick="deleteBooking(${index})">
+            ${t("delete")}
+          </button>
+
+        </div>
+
+      </div>
+
     `;
 
-    box.appendChild(card);
+    box.innerHTML+=html;
 
   });
+
+}
+
+function statusText(status){
+
+  if(status==="confirmed"){
+    return t("confirmed");
+  }
+
+  if(status==="cancelled"){
+    return t("cancelled");
+  }
+
+  return t("pending");
+
 }
 
 function confirmBooking(index){
 
-  let bookings=
-    JSON.parse(localStorage.getItem("ganeshBookings")) || [];
+  if(!confirm(t("confirmAsk"))){
+    return;
+  }
 
-  if(!bookings[index]) return;
+  let bookings=getBookings();
 
-  bookings[index].status="Confirmed";
+  if(!bookings[index]){
+    return;
+  }
 
-  bookings[index].confirmedAt=
+  bookings[index].status="confirmed";
+
+  bookings[index].confirmedAt =
     new Date().toLocaleString();
 
-  localStorage.setItem(
-    "ganeshBookings",
-    JSON.stringify(bookings)
-  );
+  saveBookings(bookings);
 
-  alert("✅ Booking confirmed!");
+  alert(t("yesConfirm"));
 
   loadBookings();
+
+}
+
+function cancelBooking(index){
+
+  if(!confirm(t("confirmAsk"))){
+    return;
+  }
+
+  let bookings=getBookings();
+
+  if(!bookings[index]){
+    return;
+  }
+
+  bookings[index].status="cancelled";
+
+  saveBookings(bookings);
+
+  alert(t("yesCancel"));
+
+  loadBookings();
+
 }
 
 function deleteBooking(index){
 
-  if(!confirm("Delete this booking?")) return;
+  if(!confirm(t("deleteAsk"))){
+    return;
+  }
 
-  let bookings=
-    JSON.parse(localStorage.getItem("ganeshBookings")) || [];
+  let bookings=getBookings();
 
   bookings.splice(index,1);
 
-  localStorage.setItem(
-    "ganeshBookings",
-    JSON.stringify(bookings)
-  );
+  saveBookings(bookings);
 
   loadBookings();
+
 }
 
 function clearBookings(){
 
-  if(!confirm("Delete ALL bookings permanently?")){
+  if(!confirm(t("clearAsk"))){
     return;
   }
 
   localStorage.removeItem("ganeshBookings");
 
-  currentBooking=null;
-
   document.getElementById("allBookings").innerHTML =
-    "<div class='card'><p>✅ All bookings deleted successfully.</p></div>";
+    '<div class="empty">✅ '+t("deleted")+"</div>";
 
-  alert("All bookings deleted successfully.");
+  document.getElementById("bookingCount").innerText =
+    t("bookings")+": 0";
+
+  alert(t("deleted"));
+
 }
+
+loadBookings();
 
 </script>
 
