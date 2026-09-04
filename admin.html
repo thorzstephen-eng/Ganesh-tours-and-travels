@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Ganesh Tours & Travels - Admin</title>
+
+<style>
+body{
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:#f4f7fb;
+  color:#172033;
+}
+header{
+  background:#0b3d91;
+  color:white;
+  padding:20px;
+  text-align:center;
+}
+.container{
+  max-width:800px;
+  margin:auto;
+  padding:20px;
+}
+.card{
+  background:white;
+  padding:18px;
+  margin-bottom:15px;
+  border-radius:12px;
+  box-shadow:0 2px 8px #0002;
+}
+button{
+  border:0;
+  border-radius:8px;
+  padding:12px 16px;
+  margin:5px;
+  font-weight:bold;
+  cursor:pointer;
+}
+.confirm{
+  background:#16803c;
+  color:white;
+}
+.delete{
+  background:#d32f2f;
+  color:white;
+}
+.refresh{
+  background:#0b3d91;
+  color:white;
+}
+input{
+  width:100%;
+  padding:12px;
+  margin:8px 0;
+  box-sizing:border-box;
+  border:1px solid #ccc;
+  border-radius:8px;
+}
+.status{
+  font-weight:bold;
+  margin-top:10px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <h1>Ganesh Tours & Travels</h1>
+  <p>Admin Booking Panel</p>
+</header>
+
+<div class="container">
+
+<div class="card">
+  <h2>Admin Login</h2>
+  <input id="password" type="password" placeholder="Admin password">
+  <button class="refresh" onclick="login()">Login</button>
+  <p id="loginMsg"></p>
+</div>
+
+<div id="adminPanel" style="display:none">
+
+<div class="card">
+  <h2>Bookings</h2>
+  <button class="refresh" onclick="loadBookings()">🔄 Refresh</button>
+  <button class="delete" onclick="clearBookings()">🗑️ Delete All</button>
+</div>
+
+<div id="allBookings"></div>
+
+</div>
+</div>
+
+<script>
+
+let currentBooking=null;
+
+/* Change this password */
+const ADMIN_PASSWORD="1234";
+
+function login(){
+
+  const pass=document.getElementById("password").value;
+
+  if(pass===ADMIN_PASSWORD){
+
+    document.getElementById("adminPanel").style.display="block";
+    document.getElementById("loginMsg").innerHTML="✅ Login successful";
+    loadBookings();
+
+  }else{
+
+    document.getElementById("loginMsg").innerHTML=
+      "❌ Wrong password";
+
+  }
+}
+
+function loadBookings(){
+
+  const box=document.getElementById("allBookings");
+
+  let bookings=[];
+
+  try{
+    bookings=JSON.parse(localStorage.getItem("ganeshBookings")) || [];
+  }catch(e){
+    bookings=[];
+  }
+
+  if(!bookings.length){
+
+    box.innerHTML=
+      '<div class="card"><h3>📭 No bookings found</h3></div>';
+
+    return;
+  }
+
+  box.innerHTML="";
+
+  bookings.forEach((booking,index)=>{
+
+    const card=document.createElement("div");
+    card.className="card";
+
+    card.innerHTML=`
+
+      <h2>Booking #${index+1}</h2>
+
+      <p><b>Name:</b> ${booking.name || booking.fullName || "-"}</p>
+
+      <p><b>Mobile:</b> ${booking.phone || booking.mobile || "-"}</p>
+
+      <p><b>Trip:</b> ${booking.trip || booking.package || booking.destination || "-"}</p>
+
+      <p><b>Date:</b> ${booking.date || booking.travelDate || "-"}</p>
+
+      <p><b>Time:</b> ${booking.time || booking.travelTime || "-"}</p>
+
+      <p><b>Passengers:</b> ${booking.passengers || booking.persons || "-"}</p>
+
+      <p><b>Payment:</b> ${booking.payment || booking.advance || "-"}</p>
+
+      <p class="status">
+        Status: ${booking.status || "Pending"}
+      </p>
+
+      <button class="confirm"
+        onclick="confirmBooking(${index})">
+        ✅ Confirm Booking
+      </button>
+
+      <button class="delete"
+        onclick="deleteBooking(${index})">
+        🗑️ Delete
+      </button>
+    `;
+
+    box.appendChild(card);
+
+  });
+}
+
+function confirmBooking(index){
+
+  let bookings=
+    JSON.parse(localStorage.getItem("ganeshBookings")) || [];
+
+  if(!bookings[index]) return;
+
+  bookings[index].status="Confirmed";
+
+  bookings[index].confirmedAt=
+    new Date().toLocaleString();
+
+  localStorage.setItem(
+    "ganeshBookings",
+    JSON.stringify(bookings)
+  );
+
+  alert("✅ Booking confirmed!");
+
+  loadBookings();
+}
+
+function deleteBooking(index){
+
+  if(!confirm("Delete this booking?")) return;
+
+  let bookings=
+    JSON.parse(localStorage.getItem("ganeshBookings")) || [];
+
+  bookings.splice(index,1);
+
+  localStorage.setItem(
+    "ganeshBookings",
+    JSON.stringify(bookings)
+  );
+
+  loadBookings();
+}
+
+function clearBookings(){
+
+  if(!confirm("Delete ALL bookings permanently?")){
+    return;
+  }
+
+  localStorage.removeItem("ganeshBookings");
+
+  currentBooking=null;
+
+  document.getElementById("allBookings").innerHTML =
+    "<div class='card'><p>✅ All bookings deleted successfully.</p></div>";
+
+  alert("All bookings deleted successfully.");
+}
+
+</script>
+
+</body>
+</html>
