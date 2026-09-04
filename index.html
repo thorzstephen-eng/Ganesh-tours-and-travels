@@ -1,101 +1,113 @@
-Enter file <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>Ganesh Tours & Travels</title>
 
 <style>
 *{box-sizing:border-box}
 body{
-  margin:0;
-  font-family:Arial,sans-serif;
-  background:#f5f7fb;
-  color:#172033;
+ margin:0;
+ font-family:Arial,sans-serif;
+ background:#f4f7fb;
+ color:#172033;
 }
 header{
-  background:#0b3d91;
-  color:white;
-  padding:22px 16px;
-  text-align:center;
+ background:#0b3d91;
+ color:white;
+ padding:25px 15px;
+ text-align:center;
 }
 header h1{margin:0;font-size:28px}
 header p{margin:8px 0 0}
-.hero{
-  background:white;
-  padding:30px 18px;
-  text-align:center;
-}
-.hero h2{font-size:30px;margin:5px}
-.hero p{font-size:17px;color:#555}
+
 .container{
-  max-width:900px;
-  margin:auto;
-  padding:20px;
+ max-width:700px;
+ margin:auto;
+ padding:18px;
 }
+
 .card{
-  background:white;
-  padding:22px;
-  margin:18px 0;
-  border-radius:15px;
-  box-shadow:0 3px 15px #0001;
+ background:white;
+ margin:15px 0;
+ padding:20px;
+ border-radius:15px;
+ box-shadow:0 4px 15px #0002;
 }
-.tours{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
-  gap:12px;
-}
-.tour{
-  background:#eef4ff;
-  padding:18px;
-  border-radius:12px;
-  text-align:center;
-  font-weight:bold;
-}
+
+h2{color:#0b3d91}
+
 label{
-  display:block;
-  margin-top:14px;
-  font-weight:bold;
+ display:block;
+ margin-top:12px;
+ font-weight:bold;
 }
-input,select,textarea{
-  width:100%;
-  padding:13px;
-  margin-top:6px;
-  border:1px solid #ccd3df;
-  border-radius:8px;
-  font-size:16px;
+
+input,select{
+ width:100%;
+ padding:13px;
+ margin-top:6px;
+ border:1px solid #bbb;
+ border-radius:8px;
+ font-size:16px;
 }
+
 button{
-  width:100%;
-  padding:15px;
-  margin-top:18px;
-  border:0;
-  border-radius:9px;
-  background:#0b3d91;
-  color:white;
-  font-size:17px;
-  font-weight:bold;
+ width:100%;
+ padding:14px;
+ margin-top:18px;
+ border:0;
+ border-radius:9px;
+ font-size:17px;
+ font-weight:bold;
+ cursor:pointer;
 }
-.advance{
-  background:#fff4d6;
-  padding:16px;
-  border-radius:10px;
-  margin-top:18px;
+
+.bookBtn{background:#0b3d91;color:white}
+.payBtn{background:#168a36;color:white}
+.whatsapp{background:#25d366;color:white}
+
+.tour{
+ display:inline-block;
+ background:#eef4ff;
+ color:#0b3d91;
+ padding:10px;
+ margin:5px;
+ border-radius:8px;
+ font-weight:bold;
 }
+
 .success{
-  display:none;
-  background:#d9f7df;
-  color:#176b2c;
-  padding:15px;
-  border-radius:10px;
-  margin-top:15px;
+ display:none;
+ background:#e8fff0;
+ border:2px solid #168a36;
+ padding:18px;
+ border-radius:12px;
+ margin-top:20px;
 }
+
+.admin{
+ display:none;
+}
+
+.booking{
+ border:1px solid #ddd;
+ padding:15px;
+ margin:12px 0;
+ border-radius:10px;
+ background:#fafafa;
+}
+
+.small{
+ font-size:13px;
+ color:#666;
+}
+
 footer{
-  background:#101828;
-  color:white;
-  text-align:center;
-  padding:25px;
-  margin-top:30px;
+ text-align:center;
+ padding:25px;
+ color:#666;
 }
 </style>
 </head>
@@ -103,174 +115,263 @@ footer{
 <body>
 
 <header>
-  <h1>Ganesh Tours & Travels</h1>
-  <p>Arnala, Virar West - 401302</p>
+<h1>Ganesh Tours & Travels</h1>
+<p>Arnala, Virar West - 401302</p>
+<p>Online Tour Booking</p>
 </header>
-
-<section class="hero">
-  <h2>Travel With Comfort & Trust</h2>
-  <p>One Way • Round Trip • Family Tours • Religious Tours</p>
-</section>
 
 <div class="container">
 
 <div class="card">
 <h2>Our Tours</h2>
 
-<div class="tours">
-<div class="tour">🛕 Ashtvinayak</div>
-<div class="tour">🌴 Kokan</div>
-<div class="tour">🏔️ Mahabaleshwar</div>
-<div class="tour">🚌 One Way Trip</div>
-<div class="tour">🔄 Round Trip</div>
-<div class="tour">📍 Custom Tour</div>
-</div>
+<span class="tour">Round Trip</span>
+<span class="tour">One Way Trip</span>
+<span class="tour">Ashtvinayak</span>
+<span class="tour">Kokan</span>
+<span class="tour">Mahabaleshwar</span>
 </div>
 
 <div class="card">
-<h2>Online Booking</h2>
 
-<form id="bookingForm">
+<h2>Book Your Tour</h2>
 
 <label>Customer Name</label>
-<input type="text" id="name" required>
+<input id="name" type="text" placeholder="Enter your name">
 
 <label>Mobile Number</label>
-<input type="tel" id="mobile" required>
+<input id="mobile" type="tel" placeholder="Enter mobile number">
 
-<label>Select Tour</label>
-<select id="tour" required>
+<label>Tour</label>
+<select id="tour">
 <option value="">Select Tour</option>
+<option>Round Trip</option>
+<option>One Way Trip</option>
 <option>Ashtvinayak</option>
 <option>Kokan</option>
 <option>Mahabaleshwar</option>
-<option>One Way Trip</option>
-<option>Round Trip</option>
-<option>Custom Tour</option>
 </select>
 
 <label>Travel Date</label>
-<input type="date" id="date" required>
+<input id="date" type="date">
 
 <label>Number of Passengers</label>
-<input type="number" id="persons" min="1" value="1" required>
+<input id="persons" type="number" min="1" value="1">
 
-<label>Total Tour Cost ₹</label>
-<input type="number" id="total" placeholder="Enter total cost" required>
+<label>Total Cost (₹)</label>
+<input id="total" type="number" placeholder="Enter total cost">
 
-<div class="advance">
-<b>Advance Payment</b>
-<p>Booking confirm करण्यासाठी Advance Payment आवश्यक आहे.</p>
-<p><strong>Advance: ₹500</strong></p>
-</div>
+<button class="bookBtn" onclick="bookTour()">Confirm Booking</button>
 
-<label>Pickup Location</label>
-<input type="text" id="pickup" placeholder="Pickup location" required>
+<div id="success" class="success">
+<h3>✅ Booking Submitted</h3>
+<div id="bookingDetails"></div>
 
-<label>Message / Special Requirement</label>
-<textarea id="message" rows="3"></textarea>
-
-<button type="submit">Confirm Booking</button>
-
-</form>
-
-<div class="success" id="success">
-<b>Booking request तयार झाली! ✅</b>
-<p id="bookingDetails"></p>
-</div>
-
-</div>
-
-<div class="card">
-<h2>Advance Payment</h2>
-<p>Booking confirm करण्यासाठी ₹500 advance payment करा.</p>
-
-<button onclick="payAdvance()">
-💳 Pay Advance ₹500
+<button class="payBtn" onclick="payAdvance()">
+Pay Advance ₹500
 </button>
 
-<p style="font-size:13px;color:#666">
-Payment button मध्ये नंतर तुमचा UPI ID जोडू.
-</p>
+<button class="whatsapp" onclick="sendWhatsApp()">
+Send Booking on WhatsApp
+</button>
+</div>
+
 </div>
 
 <div class="card">
-<h2>Contact Us</h2>
-<p>📍 Arnala, Virar West - 401302</p>
-<p>📞 Booking साठी तुमच्या mobile वरून संपर्क करा.</p>
+<h2>Admin</h2>
+
+<p>Admin panel उघडण्यासाठी password टाका.</p>
+
+<input id="adminPassword" type="password" placeholder="Admin Password">
+
+<button class="bookBtn" onclick="openAdmin()">
+Open Admin Panel
+</button>
+
+<div id="adminPanel" class="admin">
+
+<h2>📋 All Bookings</h2>
+
+<div id="allBookings"></div>
+
+<button onclick="clearBookings()" style="background:#d62828;color:white">
+Delete All Bookings
+</button>
+
+</div>
 </div>
 
 </div>
 
 <footer>
-<p>© 2026 Ganesh Tours & Travels</p>
-<p>All Rights Reserved</p>
+Ganesh Tours & Travels © 2026
 </footer>
 
 <script>
 
-document.getElementById("bookingForm").addEventListener("submit",function(e){
+let currentBooking=null;
 
-e.preventDefault();
+/* CHANGE THIS PASSWORD */
+const ADMIN_PASSWORD="1234";
 
-let name=document.getElementById("name").value;
-let mobile=document.getElementById("mobile").value;
-let tour=document.getElementById("tour").value;
-let date=document.getElementById("date").value;
-let persons=document.getElementById("persons").value;
-let total=document.getElementById("total").value;
-let pickup=document.getElementById("pickup").value;
-let message=document.getElementById("message").value;
+function bookTour(){
 
-let booking={
-name,
-mobile,
-tour,
-date,
-persons,
-total,
-advance:500,
-pickup,
-message,
-created:new Date().toLocaleString()
-};
+ const name=document.getElementById("name").value.trim();
+ const mobile=document.getElementById("mobile").value.trim();
+ const tour=document.getElementById("tour").value;
+ const date=document.getElementById("date").value;
+ const persons=document.getElementById("persons").value;
+ const total=document.getElementById("total").value;
 
-let bookings=JSON.parse(localStorage.getItem("ganeshBookings")||"[]");
-bookings.push(booking);
-localStorage.setItem("ganeshBookings",JSON.stringify(bookings));
+ if(!name || !mobile || !tour || !date || !persons || !total){
+   alert("Please fill all booking details.");
+   return;
+ }
 
-document.getElementById("success").style.display="block";
+ currentBooking={
+   id:Date.now(),
+   name:name,
+   mobile:mobile,
+   tour:tour,
+   date:date,
+   persons:persons,
+   total:total,
+   advance:500,
+   time:new Date().toLocaleString()
+ };
 
-document.getElementById("bookingDetails").innerHTML=
-"Customer: "+name+
-"<br>Tour: "+tour+
-"<br>Date: "+date+
-"<br>Passengers: "+persons+
-"<br>Total Cost: ₹"+total+
-"<br>Advance: ₹500";
+ let bookings=JSON.parse(localStorage.getItem("ganeshBookings")||"[]");
 
-window.scrollTo({
-top:document.getElementById("success").offsetTop,
-behavior:"smooth"
-});
+ bookings.push(currentBooking);
 
-});
+ localStorage.setItem("ganeshBookings",JSON.stringify(bookings));
+
+ document.getElementById("bookingDetails").innerHTML=
+ `
+ <b>Name:</b> ${name}<br>
+ <b>Mobile:</b> ${mobile}<br>
+ <b>Tour:</b> ${tour}<br>
+ <b>Date:</b> ${date}<br>
+ <b>Passengers:</b> ${persons}<br>
+ <b>Total Cost:</b> ₹${total}<br>
+ <b>Advance:</b> ₹500
+ `;
+
+ document.getElementById("success").style.display="block";
+
+ window.scrollTo({
+   top:document.getElementById("success").offsetTop,
+   behavior:"smooth"
+ });
+}
 
 function payAdvance(){
 
-let upi="YOUR-UPI-ID@upi";
+ /*
+  IMPORTANT:
+  Replace YOUR-UPI-ID@upi with your actual UPI ID.
+ */
 
-let url=
-"upi://pay?pa="+upi+
-"&pn=Ganesh%20Tours%20%26%20Travels"+
-"&am=500"+
-"&cu=INR";
+ const upi="YOUR-UPI-ID@upi";
 
-window.location.href=url;
+ const url=
+ "upi://pay?pa="+encodeURIComponent(upi)+
+ "&pn="+encodeURIComponent("Ganesh Tours & Travels")+
+ "&am=500"+
+ "&cu=INR";
 
+ window.location.href=url;
+}
+
+function sendWhatsApp(){
+
+ if(!currentBooking) return;
+
+ const message=
+ `Ganesh Tours & Travels Booking
+
+Name: ${currentBooking.name}
+Mobile: ${currentBooking.mobile}
+Tour: ${currentBooking.tour}
+Date: ${currentBooking.date}
+Passengers: ${currentBooking.persons}
+Total Cost: ₹${currentBooking.total}
+Advance: ₹500`;
+
+ const whatsapp=
+ "https://wa.me/?text="+encodeURIComponent(message);
+
+ window.open(whatsapp,"_blank");
+}
+
+function openAdmin(){
+
+ const password=document.getElementById("adminPassword").value;
+
+ if(password!==ADMIN_PASSWORD){
+   alert("Wrong admin password.");
+   return;
+ }
+
+ document.getElementById("adminPanel").style.display="block";
+
+ loadBookings();
+
+ window.scrollTo({
+   top:document.getElementById("adminPanel").offsetTop,
+   behavior:"smooth"
+ });
+}
+
+function loadBookings(){
+
+ const bookings=
+ JSON.parse(localStorage.getItem("ganeshBookings")||"[]");
+
+ const box=document.getElementById("allBookings");
+
+ if(bookings.length===0){
+   box.innerHTML="<p>No bookings yet.</p>";
+   return;
+ }
+
+ box.innerHTML="";
+
+ bookings.reverse().forEach((b,index)=>{
+
+   box.innerHTML+=
+   `
+   <div class="booking">
+
+   <h3>Booking #${bookings.length-index}</h3>
+
+   <b>Name:</b> ${b.name}<br>
+   <b>Mobile:</b> ${b.mobile}<br>
+   <b>Tour:</b> ${b.tour}<br>
+   <b>Date:</b> ${b.date}<br>
+   <b>Passengers:</b> ${b.persons}<br>
+   <b>Total:</b> ₹${b.total}<br>
+   <b>Advance:</b> ₹${b.advance}<br>
+
+   <div class="small">
+   Booked: ${b.time}
+   </div>
+
+   </div>
+   `;
+ });
+}
+
+function clearBookings(){
+
+ if(confirm("Delete all bookings?")){
+   localStorage.removeItem("ganeshBookings");
+   loadBookings();
+ }
 }
 
 </script>
 
 </body>
-</html> here
+</html>
